@@ -1,0 +1,80 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "hello",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
+            },
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "kvasir",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/tangwuyang/MINImask2former/train_net.py",
+            "console": "integratedTerminal",
+            "args": ["--config-file",
+            "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml",  //resnet
+            // "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+            "--num-gpus",
+            "1",
+            "--num-machines",
+            "1",
+            "SOLVER.IMS_PER_BATCH",
+            "2",
+            "SOLVER.BASE_LR",
+            "0.0001"]
+        },
+        {
+            "name": "kvasir_test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/tangwuyang/MINImask2former/demo/demo.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--config-file",
+                "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml",
+                "--input", "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/val/images/cju0qkwl35piu0993l0dewei2.jpg", // - val1
+                "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/val/images/cju2s16zp317h0799gr67jqc2.jpg",  // - val2
+                "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/train/images/cju0qoxqj9q6s0835b43399p4.jpg", //- train1
+                "--output", "./test_output/val1.png", "./test_output/val2.png", "./test_output/train1.png",
+                "--opts", "MODEL.WEIGHTS", 
+                "save_model/kvasir_2w/model_0019999.pth"  //resnet, 2w
+                // "save_model/kvasir_3w/model_0024999.pth"  //resnet, 2.5w
+                // ""  //swin, 3w
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
+            },
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "kvasir_evaluation",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/tangwuyang/MINImask2former/train_net.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--config-file",
+                "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml",
+                "--eval-only", "MODEL.WEIGHTS", 
+                "save_model/kvasir_2w/model_0019999.pth"  //resnet, 2w
+                // "save_model/kvasir_3w/model_0024999.pth"  //resnet, 2.5w
+                // ""  //swin, 3w
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
+            },
+            "cwd": "${workspaceFolder}",
+        }
+    ]
+}
