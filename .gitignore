@@ -1,0 +1,10 @@
+*.pyc
+# Ignore all pycache files
+__pycache__/
+# ignore output files
+output/
+save_model/
+test_output/
+
+mask2former/data/
+mask2former/modeling/pixel_decoder/ops/
