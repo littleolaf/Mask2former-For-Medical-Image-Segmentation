@@ -23,10 +23,10 @@
             "program": "/home/tangwuyang/MINImask2former/train_net.py",
             "console": "integratedTerminal",
             "args": ["--config-file",
-            "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml",  //resnet
-            // "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+            // "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml",  //resnet
+            "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
             "--num-gpus",
-            "1",
+            "2",
             "--num-machines",
             "1",
             "SOLVER.IMS_PER_BATCH",
@@ -42,15 +42,23 @@
             "console": "integratedTerminal",
             "args": [
                 "--config-file",
-                "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml",
-                "--input", "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/val/images/cju0qkwl35piu0993l0dewei2.jpg", // - val1
-                "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/val/images/cju2s16zp317h0799gr67jqc2.jpg",  // - val2
-                "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/train/images/cju0qoxqj9q6s0835b43399p4.jpg", //- train1
-                "--output", "./test_output/val1.png", "./test_output/val2.png", "./test_output/train1.png",
+                // "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml", // resnet
+                "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+
+                "--input", 
+                "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/val/images/cju0qkwl35piu0993l0dewei2.jpg", // - val1
+                // "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/val/images/cju2s16zp317h0799gr67jqc2.jpg",  // - val2
+                // "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/train/images/cju0qoxqj9q6s0835b43399p4.jpg", //- train1
+                "--output", 
+                "./test_output/val1.png", 
+                // "./test_output/val2.png", 
+                // "./test_output/train1.png",
                 "--opts", "MODEL.WEIGHTS", 
-                "save_model/kvasir_2w/model_0019999.pth"  //resnet, 2w
-                // "save_model/kvasir_3w/model_0024999.pth"  //resnet, 2.5w
-                // ""  //swin, 3w
+                // "save_model/1.5w_batch2_resnet/model_0014999.pth",  //resnet, 1.5w
+                // "save_model/2w_b2_resnet/model_0019999.pth",  //resnet, 2w
+                // "save_model/2.5w_b3_resnet/model_0024999.pth",  //resnet, 2.5w
+                // "save_model/2w_b1_swin/model_0019999.pth",  //swin, 2w
+                "save_model/2.5w_b1_swin/model_0024999.pth",  //swin, 2.5w miou=84.4
             ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
@@ -65,11 +73,14 @@
             "console": "integratedTerminal",
             "args": [
                 "--config-file",
-                "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml",
+                // "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml", //resnet
+                "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
                 "--eval-only", "MODEL.WEIGHTS", 
-                "save_model/kvasir_2w/model_0019999.pth"  //resnet, 2w
-                // "save_model/kvasir_3w/model_0024999.pth"  //resnet, 2.5w
-                // ""  //swin, 3w
+                // "save_model/1.5w_batch2_resnet/model_0014999.pth",  //resnet, 1.5w miou=84.9 time=1h40min
+                // "save_model/2w_b2_resnet/model_0019999.pth",  //resnet, 2w miou=81.4 time=4h
+                // "save_model/2.5w_b3_resnet/model_0024999.pth",  //resnet, 2.5w miou=83.6 time=4h
+                // "save_model/2w_b1_swin/model_0019999.pth",  //swin, 2w miou=87.3 time=4.5h
+                "save_model/2.5w_b1_swin/model_0024999.pth",  //swin, 2.5w miou=84.4 time=3h30min
             ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
