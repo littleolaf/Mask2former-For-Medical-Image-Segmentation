@@ -146,9 +146,13 @@ print(distutils.__version__, dir(distutils))
 ## 模型必要配置
 具体配置信息可在如下位置找到：
 `configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml`  
+
+## 与mask2former模型输入相匹配
+需要在semantic mapper与sem_seg_evaluation中修改mask读入方式为灰度图。  
 # 项目运行与调试
 运行参数与配置信息位于`./vscode/launch.json`文件中。  
 &emsp;训练模型请使用`kvasir`  
 &emsp;测试模型请使用`kvasir_test`  
 &emsp;评估模型请使用`kvasir_evaluation`  
-前端页面请使用：`streamlit run website/Interface.py` //**有待完善**
+前端页面请使用：`streamlit run website/Interface.py` //**有待完善**  
+TODO:完善实验记录，补充数据集格式和方法。拆分readme，写成总分结构

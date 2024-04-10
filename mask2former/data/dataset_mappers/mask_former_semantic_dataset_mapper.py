@@ -117,7 +117,7 @@ class MaskFormerSemanticDatasetMapper:
             # sem_seg_gt = utils.read_image(dataset_dict.pop("sem_seg_file_name")).astype("double") #这个读出来是个二维数组
 
 
-            #TODO: 以下是为了kvasir进行修改的部分   
+            # 以下是为了kvasir进行修改读取mask文件方式转为灰度图读取的部分   
             gt_image = Image.open(dataset_dict.pop("sem_seg_file_name")).convert('L')
             gt_binary_array = np.asarray(gt_image)
             sem_seg_gt = np.where(gt_binary_array > 0, 1, 0).astype("double")  # .astype(np.uint8)
