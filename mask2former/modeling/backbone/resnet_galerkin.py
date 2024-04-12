@@ -113,7 +113,7 @@ class BottleneckBlock(CNNBlockBase):
         bottleneck_channels,
         stride=1,
         num_groups=1,
-        norm="BN",
+        norm="BN", # "LN"
         stride_in_1x1=False,
         dilation=1,
     ):
@@ -146,6 +146,23 @@ class BottleneckBlock(CNNBlockBase):
         # The subsequent fb.torch.resnet and Caffe2 ResNe[X]t implementations have
         # stride in the 3x3 conv
         stride_1x1, stride_3x3 = (stride, 1) if stride_in_1x1 else (1, stride)
+        
+        # TODO:添加galerkin注意力机制
+        self.attention = SimpleAttention(n_head=8, # 注意力头数目 1
+                                    d_model=in_channels, # 输入维度
+                                    attention_type="galerkin", # 注意力类型 
+                                    diagonal_weight=0.01, # 对角权重 0.01
+                                    xavier_init=0.01, # 是否使用Xavier初始化 0.01
+                                    symmetric_init=False, # 是否使用对称初始化 False
+                                    pos_dim=0, # 1
+                                    norm=True, # 是否使用层归一化 Ture
+                                    norm_type="layer", # 归一化类型 'layer'
+                                    eps=1e-05, # 归一化的epsilon值 1e-05
+                                    dropout=0) # dropout概率 0.0
+        # 添加批归一化 Batch Normalization
+        self.bn = nn.BatchNorm2d(in_channels)
+        #添加层归一化 Layer Normalization
+        self.ln = nn.LayerNorm(in_channels)
 
         self.conv1 = Conv2d(
             in_channels,
@@ -167,21 +184,6 @@ class BottleneckBlock(CNNBlockBase):
             dilation=dilation,
             norm=get_norm(norm, bottleneck_channels),
         )
-        
-        # TODO:添加galerkin注意力机制
-        self.attention = SimpleAttention(n_head=8, # 注意力头数目 1
-                                    d_model=in_channels, # 输入维度
-                                    attention_type="galerkin", # 注意力类型 
-                                    diagonal_weight=0.01, # 对角权重 0.01
-                                    xavier_init=0.01, # 是否使用Xavier初始化 0.01
-                                    symmetric_init=False, # 是否使用对称初始化 False
-                                    pos_dim=0, # 1
-                                    norm=True, # 是否使用层归一化 Ture
-                                    norm_type="layer", # 归一化类型 'layer'
-                                    eps=1e-05, # 归一化的epsilon值 1e-05
-                                    dropout=0) # dropout概率 0.0
-        # 添加批归一化 Batch Normalization
-        self.bn = nn.BatchNorm2d(bottleneck_channels)
 
         self.conv3 = Conv2d(
             bottleneck_channels,
@@ -214,8 +216,10 @@ class BottleneckBlock(CNNBlockBase):
         out, attn_weight = self.attention(attention_input, attention_input, attention_input,)
         out = out.permute(0, 2, 1).view(B, C, H, W)
         #TODO:应该添加一个残差链接，根据galerkin原文来看。有待验证
-        # out = F.relu_(out)
-        # out = self.bn(out)
+        out += x
+        # out = self.ln(out)
+        out = self.bn(out)
+        
         
         out = self.conv1(x)
         out = F.relu_(out)
