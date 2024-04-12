@@ -24,13 +24,14 @@
             "console": "integratedTerminal",
             "args": ["--config-file",
             // "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml",  //resnet
-            "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+            "configs/kvasir_seg/MaskFormer2_R50_galerkin.yaml",  //galerkin
+            // "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
             "--num-gpus",
-            "2",
+            "1",
             "--num-machines",
             "1",
             "SOLVER.IMS_PER_BATCH",
-            "2",
+            "1",
             "SOLVER.BASE_LR",
             "0.0001"]
         },
@@ -74,13 +75,18 @@
             "args": [
                 "--config-file",
                 // "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml", //resnet
-                "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+                "configs/kvasir_seg/MaskFormer2_R50_galerkin.yaml",  //galerkin
+                // "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
                 "--eval-only", "MODEL.WEIGHTS", 
                 // "save_model/1.5w_batch2_resnet/model_0014999.pth",  //resnet, 1.5w miou=84.9 time=1h40min
                 // "save_model/2w_b2_resnet/model_0019999.pth",  //resnet, 2w miou=81.4 time=4h
                 // "save_model/2.5w_b3_resnet/model_0024999.pth",  //resnet, 2.5w miou=83.6 time=4h
                 // "save_model/2w_b1_swin/model_0019999.pth",  //swin, 2w miou=87.3 time=4.5h
-                "save_model/2.5w_b1_swin/model_0024999.pth",  //swin, 2.5w miou=84.4 time=3h30min
+                // "save_model/2.5w_b1_swin/model_0024999.pth",  //swin, 2.5w miou=84.4 time=3h30min
+                // "save_model/resnet_2.5w_b4_trained/model_0024999.pth",  //resnet, 2.5w, trained, miou=83.5 time=4h
+                // "save_model/resnet_2.5w_b4_no_pretrain/model_0024999.pth",  //resnet, 2.5w, not train, miou=79.9 time=4h
+                // "save_model/resnet_2.5w_b4_galerkin_trained/model_final.pth",  //resnet, 2.5w, galerkin, trained, miou=84.7 time=5h
+                "save_model/resnet_2.5w_b4_galerkin/model_0019999.pth",  //galerkin, 2.5w, not train, miou=76.4 time=5h
             ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",

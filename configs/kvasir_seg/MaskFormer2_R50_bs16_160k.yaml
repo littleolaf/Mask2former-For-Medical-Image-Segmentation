@@ -1,6 +1,7 @@
 _BASE_: Base-Kvasir-SEG-SemanticSegmentation.yaml
 MODEL:
   META_ARCHITECTURE: "MaskFormer"
+  # WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl" # 将weights转移到这里
   SEM_SEG_HEAD:
     NAME: "MaskFormerHead"
     IGNORE_VALUE: 10 #

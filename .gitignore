@@ -2,9 +2,10 @@
 # Ignore all pycache files
 __pycache__/
 # ignore output files
-output/
+outpu*/
 save_model/
 test_output/
+*.log
 
 mask2former/data/
 mask2former/modeling/pixel_decoder/ops/
