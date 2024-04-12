@@ -1,22 +1,23 @@
-以下内容是唐武阳用mask2former在医学影像数据集上训练自己模型的项目记录。具体学习记录可以参考我的Blog笔记：  
-TODO：待更新
-# Mask2former环境配置
-原项目Github地址：[Mask2Former](https://github.com/facebookresearch/Mask2Former)  
+The following is a project record by Tang Wuyang for using mask2former to train my own model on medical image datasets. Specific learning records can refer to my Blog notes:  
+TODO：To be updated  
+READEME in Chinese: [README](README_CN.md)  
+# Mask2former Enviroment Setup
+The original project from Github：[Mask2Former](https://github.com/facebookresearch/Mask2Former)  
 ---
-安装的软件包：
+package to be installed: 
 python=3.8  
 pytorch\==1.9.0 torchvision\==0.10.0 cudatoolkit=11.1  
-Detectron2：[Detectron2安装说明](https://detectron2.readthedocs.io/tutorials/install.html)  
-&emsp;建议从源码安装：
+Detectron2：follow [Detectron2 installation instructions](https://detectron2.readthedocs.io/tutorials/install.html)  
 ```bash
-# 在工作目录下使用下列指令下载detectron2
+# install detectron2 from source in your working directory
 git clone https://github.com/facebookresearch/detectron2.git
 python -m pip install -e detectron2
 ```
+OpenCV is optional but needed by demo and visualization
 opencv=4.8.1  
-其他必备的库（在requirements.txt中）
+Other packages (in requirements.txt): 
 	`pip install -r requirements.txt`
-#### 全流程实例：
+## Example conda environment setup:
 
 ```bash
 conda create --name mask2former python=3.8 -y
@@ -26,24 +27,24 @@ pip install -U opencv-python
 
 # under your working directory
 git clone https://github.com/facebookresearch/detectron2.git
-# 转到Mask2Former的路径下
-# cd ..
 git clone git@github.com:facebookresearch/Mask2Former.git
 cd Mask2Former
-pip install -r requirements.txt  # 安装其他必备库
-cd mask2former/modeling/pixel_decoder/ops  # 为 MSDeformAttn 编译 CUDA 内核
+pip install -r requirements.txt  # install other packages
+cd mask2former/modeling/pixel_decoder/ops  # compile CUDA kernel for MSDeformAttn
 sh make.sh
 ```
 
-# 医学数据集注册与使用
-## kvasir-SEG数据集介绍
-[Kvasir-SEG数据集官网](https://datasets.simula.no/kvasir-seg/)  
-它是胃肠道息肉图像和相应分割mask的开放获取数据集，由经验丰富的胃肠病学家手动注释和验证。
-## Detectron2数据集注册
-请参考Detectron2官方文档：[数据集注册](https://detectron2.readthedocs.io/tutorials/datasets.html#register-a-dataset)  
-具体配置信息可在如下位置找到：
+# Registration and use of medical datasets
+## Introduction of kvasir-SEG dataset
+[Kvasir-SEG Website](https://datasets.simula.no/kvasir-seg/)  
+It is an open-access dataset of gastrointestinal polyp images and corresponding segmentation masks, manually annotated and verified by an experienced gastroenterologist.
+## Register the dataset in Detectron2
+Please refer to Detectron2 's official documentation: [Register a Dataset](https://detectron2.readthedocs.io/tutorials/datasets.html#register-a-dataset)  
+
+The specific configuration information can be found in the following location:
 `mask2former/data/datasets/register_kvasir_seg_semantic.py`  
-预期数据集结构如下所示：
+
+Expected dataset structure for kvasir-SEG: 
 ```shell
 $DETECTRON2_DATASETS/
   kvasir-SEG/
@@ -54,30 +55,27 @@ $DETECTRON2_DATASETS/
       images/
       masks/
 ```
-其中`$DETECTRON2_DATASETS`为环境变量中指定的内置数据集的位置。
+`$DETECTRON2_DATASETS` is the environment variable specify the location of the datasets.
 
-## 模型必要配置
-具体配置信息可在如下位置找到：
+## Model Configuration
+The specific configuration information can be found in the following location:  
 `configs/kvasir_seg/`  
 
-## 与mask2former模型输入相匹配
-需要在semantic mapper与sem_seg_evaluation中修改mask读入方式为灰度图。 
+## Different from mask2former
+Since the mask of kvasir dataset contains three channels, it is necessary to modify the mask reading method to grayscale in `mask2former/data/dataset_mappers/mask_former_semantic_dataset_mapper.py` and sem_seg_evaluation in Detectron2.
+### Example:
 ```python
-"""修改读取mask文件方式转为灰度图读取"""
-# sem_seg_gt = utils.read_image(dataset_dict.pop("sem_seg_file_name")).astype("double") #这个读出来是个二维数组
-# 以下是为了kvasir进行修改读取mask文件方式转为灰度图读取的部分   
+"""original code"""
+# sem_seg_gt = utils.read_image(dataset_dict.pop("sem_seg_file_name")).astype("double")
+"""modified code""" 
 gt_image = Image.open(dataset_dict.pop("sem_seg_file_name")).convert('L')
 gt_binary_array = np.asarray(gt_image)
-sem_seg_gt = np.where(gt_binary_array > 0, 1, 0).astype("double")  # .astype(np.uint8)
+sem_seg_gt = np.where(gt_binary_array > 0, 1, 0).astype("double")
 ```
 
-# 项目运行与调试
-运行参数与配置信息位于`./vscode/launch.json`文件中。  
-&emsp;训练模型请使用`kvasir`  
-&emsp;测试模型请使用`kvasir_test`  
-&emsp;评估模型请使用`kvasir_evaluation`  
-前端页面请使用：`streamlit run website/Interface.py` //**有待完善**  
-TODO:
-- [ ] 完善实验数据记录
-- [x] 补充数据集格式和方法
-- [ ] 模型改进创新记录
+# Operation and debugging
+Please find the file `./vscode/launch.json` for running and debugging.  
+&emsp;To train the model, please use:  `kvasir`  
+&emsp;To test the model, please use: `kvasir_test`  
+&emsp;To evaluate the model, please use: `kvasir_evaluation`  
+To run the results website, please use: `streamlit run website/Interface.py` **(To be updated)**  

@@ -9,3 +9,4 @@ test_output/
 
 mask2former/data/
 mask2former/modeling/pixel_decoder/ops/
+resnet_galerkin/
