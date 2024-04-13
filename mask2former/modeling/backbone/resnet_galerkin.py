@@ -113,7 +113,7 @@ class BottleneckBlock(CNNBlockBase):
         bottleneck_channels,
         stride=1,
         num_groups=1,
-        norm="BN", # "LN"
+        norm="BN", # "BN"
         stride_in_1x1=False,
         dilation=1,
     ):
@@ -148,7 +148,7 @@ class BottleneckBlock(CNNBlockBase):
         stride_1x1, stride_3x3 = (stride, 1) if stride_in_1x1 else (1, stride)
         
         # TODO:添加galerkin注意力机制
-        self.attention = SimpleAttention(n_head=8, # 注意力头数目 1
+        self.attention = SimpleAttention(n_head=1, # 注意力头数目 1
                                     d_model=in_channels, # 输入维度
                                     attention_type="galerkin", # 注意力类型 
                                     diagonal_weight=0.01, # 对角权重 0.01

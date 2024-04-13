@@ -1,5 +1,4 @@
-The following is a project record by Tang Wuyang for using mask2former to train my own model on medical image datasets. Specific learning records can refer to my Blog notes:  
-TODO：To be updated  
+The following is a project record by Tang Wuyang for using mask2former to train my own model on medical image datasets. Specific learning records can refer to my Blog notes:[Mask2former Learning Record](https://littleolaf.github.io/posts/learn/mask2former%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/)  
 READEME in Chinese: [简体中文](README_CN.md)  
 # Mask2former Enviroment Setup
 The original project from Github：[Mask2Former](https://github.com/facebookresearch/Mask2Former)  

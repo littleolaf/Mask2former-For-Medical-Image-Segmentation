@@ -1,5 +1,4 @@
-以下内容是唐武阳用mask2former在医学影像数据集上训练自己模型的项目记录。具体学习记录可以参考我的Blog笔记：  
-TODO：待更新
+以下内容是唐武阳用mask2former在医学影像数据集上训练自己模型的项目记录。具体学习记录可以参考我的Blog笔记：[Mask2former 学习记录](https://littleolaf.github.io/posts/learn/mask2former%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/)  
 # Mask2former环境配置
 原项目Github地址：[Mask2Former](https://github.com/facebookresearch/Mask2Former)  
 ---
