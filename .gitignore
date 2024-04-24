@@ -6,7 +6,12 @@ outpu*/
 save_model/
 test_output/
 *.log
+z_compare*
 
-mask2former/data/
+# 忽略自带文件
+*ade*
+*coco*
+*mapillary*
+register_medical.py
+*mapper.py
 mask2former/modeling/pixel_decoder/ops/
-resnet_galerkin/

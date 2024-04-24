@@ -40,8 +40,8 @@ def linear_attention(query, key, value,
     out = torch.matmul(query, p_attn)
 
     #TODO:修改for resnet
-    large_value = torch.finfo(out.dtype).max * 0.8 # 使用输出张量的数据类型的最大值作为替换值
-    out = torch.clamp(out, -large_value, large_value)
+    # large_value = torch.finfo(out.dtype).max * 0.8 # 使用输出张量的数据类型的最大值作为替换值
+    # out = torch.clamp(out, -large_value, large_value)
 
     return out, p_attn
 
@@ -102,7 +102,7 @@ class SimpleAttention(nn.Module):
         self.norm_type = norm_type
         if norm:
             self._get_norm(eps=eps)
-
+        # 全连接层修改维度
         if pos_dim > 0:
             self.fc = nn.Linear(d_model + n_head*pos_dim, d_model)
 
@@ -117,7 +117,7 @@ class SimpleAttention(nn.Module):
         bsz = query.size(0)
         if weight is not None:
             query, key = weight*query, weight*key
-
+        # y_in 分别乘权重得到QKV
         query, key, value = \
             [layer(x).view(bsz, -1, self.n_head, self.d_k).transpose(1, 2)
              for layer, x in zip(self.linears, (query, key, value))]
@@ -126,7 +126,7 @@ class SimpleAttention(nn.Module):
             if self.attention_type in ['linear', 'galerkin', 'global']:
                 if self.norm_type == 'instance':
                     key, value = key.transpose(-2, -1), value.transpose(-2, -1)
-
+                # 给KV加上LN
                 key = torch.stack(
                     [norm(x) for norm, x in
                      zip(self.norm_K, (key[:, i, ...] for i in range(self.n_head)))], dim=1)
@@ -149,7 +149,7 @@ class SimpleAttention(nn.Module):
 
                 if self.norm_type == 'instance':
                     key, query = key.transpose(-2, -1), value.transpose(-2, -1)
-
+        # 加入位置编码
         if pos is not None and self.pos_dim > 0:
             assert pos.size(-1) == self.pos_dim
             pos = pos.unsqueeze(1)

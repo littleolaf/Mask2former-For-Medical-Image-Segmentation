@@ -8,5 +8,6 @@ from . import (
     register_ade20k_instance,
     register_mapillary_vistas_panoptic,
     register_kvasir_seg_semantic,
-    register_medical,
+    
+    register_DRIVE_semantic_seg,
 )

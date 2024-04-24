@@ -1,5 +1,4 @@
-_BASE_: Base-Kvasir-SEG-SemanticSegmentation.yaml
-OUTPUT_DIR: "output_kvasir_resnet_new_pixel/" # 指定输出路径
+_BASE_: Base-DRIVE-SemanticSegmentation.yaml
 MODEL:
   META_ARCHITECTURE: "MaskFormer"
   WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl" # 将weights转移到这里

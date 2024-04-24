@@ -1,3 +1,4 @@
+import math
 import numpy as np
 import fvcore.nn.weight_init as weight_init
 import torch
@@ -17,6 +18,7 @@ from detectron2.modeling.backbone import Backbone
 from detectron2.modeling import BACKBONE_REGISTRY
 
 from .galerkin_attention import SimpleAttention
+from .SRNO_galerkin import simple_attn, ChannelAttention
 
 __all__ = [
     "ResNetBlockBase",
@@ -146,23 +148,6 @@ class BottleneckBlock(CNNBlockBase):
         # The subsequent fb.torch.resnet and Caffe2 ResNe[X]t implementations have
         # stride in the 3x3 conv
         stride_1x1, stride_3x3 = (stride, 1) if stride_in_1x1 else (1, stride)
-        
-        # TODO:添加galerkin注意力机制
-        self.attention = SimpleAttention(n_head=1, # 注意力头数目 1
-                                    d_model=in_channels, # 输入维度
-                                    attention_type="galerkin", # 注意力类型 
-                                    diagonal_weight=0.01, # 对角权重 0.01
-                                    xavier_init=0.01, # 是否使用Xavier初始化 0.01
-                                    symmetric_init=False, # 是否使用对称初始化 False
-                                    pos_dim=0, # 1
-                                    norm=True, # 是否使用层归一化 Ture
-                                    norm_type="layer", # 归一化类型 'layer'
-                                    eps=1e-05, # 归一化的epsilon值 1e-05
-                                    dropout=0) # dropout概率 0.0
-        # 添加批归一化 Batch Normalization
-        self.bn = nn.BatchNorm2d(in_channels)
-        #添加层归一化 Layer Normalization
-        self.ln = nn.LayerNorm(in_channels)
 
         self.conv1 = Conv2d(
             in_channels,
@@ -209,18 +194,7 @@ class BottleneckBlock(CNNBlockBase):
         # TODO this somehow hurts performance when training GN models from scratch.
         # Add it as an option when we need to use this code to train a backbone.
 
-    def forward(self, x): 
-        # TODO:添加galerkin注意力层
-        B, C, H, W = x.shape
-        attention_input = x.view(B, C, H*W).permute(0, 2, 1) # [B, HW, C]
-        out, attn_weight = self.attention(attention_input, attention_input, attention_input,)
-        out = out.permute(0, 2, 1).view(B, C, H, W)
-        #TODO:应该添加一个残差链接，根据galerkin原文来看。有待验证
-        out += x
-        # out = self.ln(out)
-        out = self.bn(out)
-        
-        
+    def forward(self, x):
         out = self.conv1(x)
         out = F.relu_(out)
 
@@ -236,8 +210,133 @@ class BottleneckBlock(CNNBlockBase):
 
         out += shortcut
         out = F.relu_(out)
-        return out
+        
+        return out    
 
+class AttentionBlock(CNNBlockBase):
+    """
+    The standard bottleneck residual block used by ResNet-50, 101 and 152
+    defined in :paper:`ResNet`.  It contains 3 conv layers with kernels
+    1x1, 3x3, 1x1, and a projection shortcut if needed.
+    """
+
+    def __init__(
+        self,
+        in_channels,
+        out_channels,
+        *,
+        bottleneck_channels,
+        stride=1,
+        num_groups=1,
+        norm="BN", # "BN"
+        stride_in_1x1=False,
+        dilation=1,
+    ):
+        """
+        Args:
+            bottleneck_channels (int): number of output channels for the 3x3
+                "bottleneck" conv layers.
+            num_groups (int): number of groups for the 3x3 conv layer.
+            norm (str or callable): normalization for all conv layers.
+                See :func:`layers.get_norm` for supported format.
+            stride_in_1x1 (bool): when stride>1, whether to put stride in the
+                first 1x1 convolution or the bottleneck 3x3 convolution.
+            dilation (int): the dilation rate of the 3x3 conv layer.
+        """
+        super().__init__(in_channels, out_channels, stride)
+
+        if in_channels != out_channels:
+            self.shortcut = Conv2d(
+                in_channels,
+                out_channels,
+                kernel_size=1,
+                stride=stride,
+                bias=False,
+                norm=get_norm(norm, out_channels),
+            )
+        else:
+            self.shortcut = None
+
+        # The original MSRA ResNet models have stride in the first 1x1 conv
+        # The subsequent fb.torch.resnet and Caffe2 ResNe[X]t implementations have
+        # stride in the 3x3 conv
+        stride_1x1, stride_3x3 = (stride, 1) if stride_in_1x1 else (1, stride)
+
+        self.conv1 = Conv2d(
+            in_channels,
+            bottleneck_channels,
+            kernel_size=1,
+            stride=stride_1x1,
+            bias=False,
+            norm=get_norm(norm, bottleneck_channels),
+        )
+
+        self.conv2 = Conv2d(
+            bottleneck_channels,
+            bottleneck_channels,
+            kernel_size=3,
+            stride=stride_3x3,
+            padding=1 * dilation,
+            bias=False,
+            groups=num_groups,
+            dilation=dilation,
+            norm=get_norm(norm, bottleneck_channels),
+        )
+
+        self.conv3 = Conv2d(
+            bottleneck_channels,
+            out_channels,
+            kernel_size=1,
+            bias=False,
+            norm=get_norm(norm, out_channels),
+        )
+
+        # TODO:添加galerkin注意力机制
+        self.get_attention(d_model=bottleneck_channels)
+
+        for layer in [self.conv1, self.conv2, self.conv3, self.shortcut]:
+            if layer is not None:  # shortcut can be None
+                weight_init.c2_msra_fill(layer)
+
+        # Zero-initialize the last normalization in each residual branch,
+        # so that at the beginning, the residual branch starts with zeros,
+        # and each residual block behaves like an identity.
+        # See Sec 5.1 in "Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour":
+        # "For BN layers, the learnable scaling coefficient γ is initialized
+        # to be 1, except for each residual block's last BN
+        # where γ is initialized to be 0."
+
+        # nn.init.constant_(self.conv3.norm.weight, 0)
+        # TODO this somehow hurts performance when training GN models from scratch.
+        # Add it as an option when we need to use this code to train a backbone.
+
+    def forward(self, x):
+        out = self.conv1(x)
+        out = F.relu_(out)
+
+        # out = self.conv2(out)
+        # out = F.relu_(out)
+        out = self.attention(out)
+        
+        out = self.conv3(out)
+        # 通道注意力+galerkin attention
+        
+
+        if self.shortcut is not None:
+            shortcut = self.shortcut(x)
+        else:
+            shortcut = x
+
+        out += shortcut
+        out = F.relu_(out)
+
+        return out    
+    # 添加attention
+    def get_attention(self, d_model:int): 
+        head = 32
+        if d_model >= 256:
+            head = 64
+        self.attention = simple_attn(midc=d_model, heads=head)
 
 class DeformBottleneckBlock(CNNBlockBase):
     """
@@ -474,6 +573,7 @@ class ResNet(Backbone):
         x = self.stem(x)
         if "stem" in self._out_features:
             outputs["stem"] = x
+        # 每个stage的输出(一个stage多个blocks)
         for name, stage in zip(self.stage_names, self.stages):
             x = stage(x)
             if name in self._out_features:
@@ -553,7 +653,7 @@ class ResNet(Backbone):
         all be 1.
         """
         blocks = []
-        for i in range(num_blocks):
+        for i in range(num_blocks-1):
             curr_kwargs = {}
             for k, v in kwargs.items():
                 if k.endswith("_per_block"):
@@ -571,6 +671,24 @@ class ResNet(Backbone):
                 block_class(in_channels=in_channels, out_channels=out_channels, **curr_kwargs)
             )
             in_channels = out_channels
+        # 添加1个attention block
+        curr_kwargs = {}
+        for k, v in kwargs.items():
+            if k.endswith("_per_block"):
+                assert len(v) == num_blocks, (
+                    f"Argument '{k}' of make_stage should have the "
+                    f"same length as num_blocks={num_blocks}."
+                )
+                newk = k[: -len("_per_block")]
+                assert newk not in kwargs, f"Cannot call make_stage with both {k} and {newk}!"
+                curr_kwargs[newk] = v[i]
+            else:
+                curr_kwargs[k] = v
+
+        blocks.append(
+            AttentionBlock(in_channels=in_channels, out_channels=out_channels, **curr_kwargs)
+        )
+
         return blocks
 
     @staticmethod

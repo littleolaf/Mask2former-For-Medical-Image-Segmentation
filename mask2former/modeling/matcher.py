@@ -114,8 +114,8 @@ class HungarianMatcher(nn.Module):
             # gt masks are already padded when preparing target
             tgt_mask = targets[b]["masks"].to(out_mask)
 
-            out_mask = out_mask[:, None]
-            tgt_mask = tgt_mask[:, None]
+            out_mask = out_mask[:, None] # [100,1,128,128]
+            tgt_mask = tgt_mask[:, None] # [2,1,512,512]
             # all masks share the same set of points for efficient matching!
             point_coords = torch.rand(1, self.num_points, 2, device=out_mask.device)
             # get gt labels
@@ -135,7 +135,7 @@ class HungarianMatcher(nn.Module):
                 out_mask = out_mask.float()
                 tgt_mask = tgt_mask.float()
                 # Compute the focal loss between masks
-                cost_mask = batch_sigmoid_ce_loss_jit(out_mask, tgt_mask)
+                cost_mask = batch_sigmoid_ce_loss_jit(out_mask, tgt_mask) # [100,2][num_queries,classes]
 
                 # Compute the dice loss betwen masks
                 cost_dice = batch_dice_loss_jit(out_mask, tgt_mask) # [100,2][num_queries,classes]

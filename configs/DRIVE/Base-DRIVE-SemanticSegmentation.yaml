@@ -14,12 +14,12 @@ MODEL:
     # NORM: "SyncBN"
     RES5_MULTI_GRID: [1, 1, 1]  # not used
 DATASETS:
-  TRAIN: ("kvasir_seg_sem_seg_train",)
-  TEST: ("kvasir_seg_sem_seg_val",)
+  TRAIN: ("DRIVE_training",)
+  TEST: ("DRIVE_test",)
 SOLVER:
   IMS_PER_BATCH: 16
   BASE_LR: 0.0001
-  MAX_ITER:  100000 # 训练次数160000
+  MAX_ITER:  10000 # 训练次数160000
   WARMUP_FACTOR: 1.0
   WARMUP_ITERS: 0
   WEIGHT_DECAY: 0.05
@@ -53,7 +53,7 @@ INPUT:
   FORMAT: "RGB"
   DATASET_MAPPER_NAME: "mask_former_semantic"
 TEST:
-  EVAL_PERIOD: 5000 # 5000在训练多少次后开始evaluate
+  EVAL_PERIOD: 2000 # 5000在训练多少次后开始evaluate
   # AUG:
   #   ENABLED: True
   #   MIN_SIZES: [256, 384, 512, 640, 768, 896]

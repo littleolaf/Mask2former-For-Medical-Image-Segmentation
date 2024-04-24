@@ -21,6 +21,10 @@ class SelfAttentionLayer(nn.Module):
         super().__init__()
         self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
 
+        #TODO:添加galerkin attention
+        from mask2former.
+        self.sim
+
         self.norm = nn.LayerNorm(d_model)
         self.dropout = nn.Dropout(dropout)
 

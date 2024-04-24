@@ -31,7 +31,7 @@
             "--num-machines",
             "1",
             "SOLVER.IMS_PER_BATCH",
-            "1",
+            "2",
             "SOLVER.BASE_LR",
             "0.0001"]
         },
@@ -83,10 +83,53 @@
                 // "save_model/2.5w_b3_resnet/model_0024999.pth",  //resnet, 2.5w miou=83.6 time=4h
                 // "save_model/2w_b1_swin/model_0019999.pth",  //swin, 2w miou=87.3 time=4.5h
                 // "save_model/2.5w_b1_swin/model_0024999.pth",  //swin, 2.5w miou=84.4 time=3h30min
-                // "save_model/resnet_2.5w_b4_trained/model_0024999.pth",  //resnet, 2.5w, trained, miou=83.5 time=4h
-                // "save_model/resnet_2.5w_b4_no_pretrain/model_0024999.pth",  //resnet, 2.5w, not train, miou=79.9 time=4h
-                // "save_model/resnet_2.5w_b4_galerkin_trained/model_final.pth",  //resnet, 2.5w, galerkin, trained, miou=84.7 time=5h
                 "save_model/resnet_2.5w_b4_galerkin/model_0019999.pth",  //galerkin, 2.5w, not train, miou=76.4 time=5h
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
+            },
+            "cwd": "${workspaceFolder}",
+        },
+        {
+            "name": "DRIVE",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/tangwuyang/MINImask2former/train_net.py",
+            "console": "integratedTerminal",
+            "args": ["--config-file",
+            // "configs/DRIVE/MaskFormer2_R50_bs16_160k.yaml",  //resnet
+            "configs/DRIVE/MaskFormer2_R50_galerkin.yaml",  //galerkin
+            // "configs/DRIVE/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+            "--num-gpus",
+            "1",
+            "--num-machines",
+            "1",
+            "SOLVER.IMS_PER_BATCH",
+            "2",
+            "SOLVER.BASE_LR",
+            "0.0001"]
+        },
+        // output_DRIVE/model_0004999.pth
+        {
+            "name": "DRIVE_test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/tangwuyang/MINImask2former/demo/demo.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--config-file",
+                // "configs/DRIVE/MaskFormer2_R50_bs16_160k.yaml", // resnet
+                "configs/DRIVE/MaskFormer2_R50_galerkin.yaml",  //galerkin
+                // "configs/DRIVE/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+
+                "--input", 
+                "/home/tangwuyang/Dataset/DRIVE/test/images/01_test.tif", // - val1
+                "--output", 
+                "./test_output/val1.png", 
+                // "./test_output/val2.png", 
+                // "./test_output/train1.png",
+                "--opts", "MODEL.WEIGHTS", 
+                "output_DRIVE/model_0004999.pth",
             ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
