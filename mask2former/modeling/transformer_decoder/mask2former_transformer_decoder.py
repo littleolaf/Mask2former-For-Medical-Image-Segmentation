@@ -22,8 +22,18 @@ class SelfAttentionLayer(nn.Module):
         self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
 
         #TODO:添加galerkin attention
-        from mask2former.
-        self.sim
+        from mask2former.modeling.backbone.galerkin_attention import SimpleAttention
+        self.simple_attn = SimpleAttention(n_head=nhead, # 注意力头数目
+                                    d_model=d_model, # 输入维度
+                                    attention_type="galerkin", # 注意力类型 
+                                    diagonal_weight=0.01, # 对角权重 0.01
+                                    xavier_init=0.01, # 是否使用Xavier初始化 0.01
+                                    symmetric_init=False, # 是否使用对称初始化 False
+                                    pos_dim=0, # 1
+                                    norm=True, # 是否使用层归一化 Ture
+                                    norm_type="layer", # 归一化类型 'layer'
+                                    eps=1e-05, # 归一化的epsilon值 1e-05
+                                    dropout=dropout) # dropout概率 0.0
 
         self.norm = nn.LayerNorm(d_model)
         self.dropout = nn.Dropout(dropout)
@@ -46,8 +56,12 @@ class SelfAttentionLayer(nn.Module):
                      tgt_key_padding_mask: Optional[Tensor] = None,
                      query_pos: Optional[Tensor] = None):
         q = k = self.with_pos_embed(tgt, query_pos)
-        tgt2 = self.self_attn(q, k, value=tgt, attn_mask=tgt_mask,
-                              key_padding_mask=tgt_key_padding_mask)[0]
+        # tgt2 = self.self_attn(q, k, value=tgt, attn_mask=tgt_mask,
+        #                       key_padding_mask=tgt_key_padding_mask)[0]
+        
+        # TODO:添加新的attention
+        tgt2,_ = self.simple_attn(q,k,q,mask=tgt_mask)
+
         tgt = tgt + self.dropout(tgt2)
         tgt = self.norm(tgt)
 
@@ -59,8 +73,12 @@ class SelfAttentionLayer(nn.Module):
                     query_pos: Optional[Tensor] = None):
         tgt2 = self.norm(tgt)
         q = k = self.with_pos_embed(tgt2, query_pos)
-        tgt2 = self.self_attn(q, k, value=tgt2, attn_mask=tgt_mask,
-                              key_padding_mask=tgt_key_padding_mask)[0]
+        # tgt2 = self.self_attn(q, k, value=tgt2, attn_mask=tgt_mask,
+        #                       key_padding_mask=tgt_key_padding_mask)[0]
+        
+        # TODO:添加新的attention
+        tgt2,_ = self.simple_attn(q,k,value=tgt2, mask=tgt_mask)
+
         tgt = tgt + self.dropout(tgt2)
         
         return tgt
