@@ -191,7 +191,7 @@ class BottleneckBlock(CNNBlockBase):
         # where γ is initialized to be 0."
 
         # nn.init.constant_(self.conv3.norm.weight, 0)
-        # TODO this somehow hurts performance when training GN models from scratch.
+        # this somehow hurts performance when training GN models from scratch.
         # Add it as an option when we need to use this code to train a backbone.
 
     def forward(self, x):
@@ -307,7 +307,7 @@ class AttentionBlock(CNNBlockBase):
         # where γ is initialized to be 0."
 
         # nn.init.constant_(self.conv3.norm.weight, 0)
-        # TODO this somehow hurts performance when training GN models from scratch.
+        # this somehow hurts performance when training GN models from scratch.
         # Add it as an option when we need to use this code to train a backbone.
 
     def forward(self, x):

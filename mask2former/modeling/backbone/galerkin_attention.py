@@ -39,10 +39,6 @@ def linear_attention(query, key, value,
 
     out = torch.matmul(query, p_attn)
 
-    #TODO:修改for resnet
-    # large_value = torch.finfo(out.dtype).max * 0.8 # 使用输出张量的数据类型的最大值作为替换值
-    # out = torch.clamp(out, -large_value, large_value)
-
     return out, p_attn
 
 class SimpleAttention(nn.Module):
