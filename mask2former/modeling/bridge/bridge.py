@@ -64,26 +64,16 @@ def bridge(x:dict):
     inputs = [value for value in x.values()]
     x1,x2,x3,x4 = inputs
     B,C,H,W = x1.shape
-    from mask2former.modeling.backbone.galerkin_attention import SimpleAttention
-    # from mask2former.modeling.backbone.SRNO_galerkin import simple_attn
-    # simple_atten = SimpleAttention(n_head=16, # 注意力头数目
-    #                                 d_model=C, # 输入维度
-    #                                 attention_type="galerkin", # 注意力类型 
-    #                                 diagonal_weight=0.01, # 对角权重 0.01
-    #                                 xavier_init=0.01, # 是否使用Xavier初始化 0.01
-    #                                 symmetric_init=False, # 是否使用对称初始化 False
-    #                                 pos_dim=0, # 1
-    #                                 norm=True, # 是否使用层归一化 Ture
-    #                                 norm_type="layer", # 归一化类型 'layer'
-    #                                 eps=1e-05, # 归一化的epsilon值 1e-05
-    #                                 dropout=0.0) # dropout概率 0.0
     simple_atten = simple_attn(midc=C,heads=64)
     N1 = H*W
     N2 = int(N1 + (H*W/2))
     N3 = int(N2 + (H*W/4))
-    H2 = W2 = int(H/2)
-    H3 = W3 = int(H/4)
-    H4 = W4 = int(H/8)
+    H2 = int(H/2)
+    H3 = int(H/4)
+    H4 = int(H/8)
+    W2 = int(W/2)
+    W3 = int(W/4)
+    W4 = int(W/8)
 
 
     y1 = x1.permute(0, 2, 3, 1).reshape(B, -1, C)
