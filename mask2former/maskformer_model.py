@@ -203,6 +203,13 @@ class MaskFormer(nn.Module):
         images = ImageList.from_tensors(images, self.size_divisibility)
 
         features = self.backbone(images.tensor)  #[0]
+        # for feature in features:
+        #     print(features[feature].shape)
+        # TODO:bridge进行特征融合
+        from mask2former.modeling.bridge.bridge import bridge
+        for i in range(3):
+            features = bridge(features)
+
         outputs = self.sem_seg_head(features)
         # print(outputs)
 
