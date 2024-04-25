@@ -107,7 +107,7 @@ class simple_attn(nn.Module):
         B, C, H, W = x.shape
         bias = x
         #计算通道权重
-        channel_weight = self.channel_atten(x)
+        # channel_weight = self.channel_atten(x)
         # x = channel_weight*x
         # bias = x
 
@@ -125,7 +125,7 @@ class simple_attn(nn.Module):
 
         out = v.permute(0, 3, 1, 2) + bias
         # 用通道权重加权
-        out = out*channel_weight + bias
+        # out = out*channel_weight + bias
         # 前向传播
         # out = self.FFN(out) + out
         # bias = self.o_proj2(self.act(self.o_proj1(ret))) + bias
