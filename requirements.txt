@@ -1,9 +1,0 @@
-cython
-scipy
-shapely
-timm
-h5py
-submitit
-scikit-image
-streamlit
-
