@@ -207,7 +207,7 @@ class MaskFormer(nn.Module):
         #     print(features[feature].shape)
         # TODO:bridge进行特征融合
         from mask2former.modeling.bridge.bridge import bridge
-        for i in range(3):
+        for _ in range(2):
             features = bridge(features)
 
         outputs = self.sem_seg_head(features)
