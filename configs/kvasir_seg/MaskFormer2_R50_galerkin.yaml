@@ -1,5 +1,5 @@
 _BASE_: Base-Kvasir-SEG-SemanticSegmentation.yaml
-OUTPUT_DIR: "new_decoder/galerkin/" # 指定输出路径
+OUTPUT_DIR: "new_bridge/galerkin/" # 指定输出路径
 MODEL:
   BACKBONE:
     NAME: "build_resnet_galerkin_backbone"

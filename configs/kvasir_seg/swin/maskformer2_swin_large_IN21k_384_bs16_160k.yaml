@@ -1,5 +1,5 @@
 _BASE_: ../MaskFormer2_R50_bs16_160k.yaml
-OUTPUT_DIR: "new_decoder/Swin/" # 指定输出路径
+OUTPUT_DIR: "new_bridge/Swin2/" # 指定输出路径
 MODEL:
   BACKBONE:
     NAME: "D2SwinTransformer"
