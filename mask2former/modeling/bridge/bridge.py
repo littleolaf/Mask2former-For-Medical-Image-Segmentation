@@ -53,18 +53,20 @@ class simple_attn(nn.Module):
         return out
 
 def FFN(in_channels, x):
-    fc = nn.Sequential(
+    DW_conv = nn.Sequential(
         nn.Conv2d(in_channels, in_channels, kernel_size=3, stride=1, padding=1, groups=in_channels).to(device),
-        nn.Conv2d(in_channels, in_channels, kernel_size=1,).to(device),
-        nn.GELU().to(device)
+        nn.Conv2d(in_channels, in_channels, kernel_size=1,).to(device),   
     )
-    return fc(x)
+    gelu = nn.GELU().to(device)
+    GN = nn.GroupNorm(num_groups=in_channels,num_channels=in_channels).to(device)
+    return gelu(GN(DW_conv(x) + x))
 
 def bridge(x:dict):
     inputs = [value for value in x.values()]
     x1,x2,x3,x4 = inputs
     B,C,H,W = x1.shape
     simple_atten = simple_attn(midc=C,heads=64)
+    LN = nn.LayerNorm(C,device="cuda")
     N1 = H*W
     N2 = int(N1 + (H*W/2))
     N3 = int(N2 + (H*W/4))
@@ -82,7 +84,7 @@ def bridge(x:dict):
     y4 = x4.permute(0, 2, 3, 1).reshape(B, -1, C)
     total = torch.cat([y1,y2,y3,y4],-2)
 
-    out1 = simple_atten(total)
+    out1 = LN(simple_atten(total) + total)
     # out1 = total + out1
 
     z1 = out1[:,:N1,:].reshape(B, H, W, C).permute(0, 3, 1, 2)
