@@ -59,7 +59,7 @@
                 // "save_model/2w_b2_resnet/model_0019999.pth",  //resnet, 2w
                 // "save_model/2.5w_b3_resnet/model_0024999.pth",  //resnet, 2.5w
                 // "save_model/2w_b1_swin/model_0019999.pth",  //swin, 2w
-                "save_model/2.5w_b1_swin/model_0024999.pth",  //swin, 2.5w miou=84.4
+                "new_bridge/Swin2/model_0079999.pth",  //swin
             ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
@@ -84,7 +84,7 @@
                 // "save_model/2w_b1_swin/model_0019999.pth",  //swin, 2w miou=87.3 time=4.5h
                 // "save_model/2.5w_b1_swin/model_0024999.pth",  //swin, 2.5w miou=84.4 time=3h30min
                 // "save_model/resnet_2.5w_b4_galerkin/model_0019999.pth",  //galerkin, 2.5w, not train, miou=76.4 time=5h
-                "save_model/swin_bridge/model_0024999.pth",
+                "new_bridge/Swin2/model_0079999.pth",
             ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",

@@ -1,4 +1,5 @@
 _BASE_: Base-DRIVE-SemanticSegmentation.yaml
+OUTPUT_DIR: "output_DRIVE_resnet/" # 指定输出路径
 MODEL:
   META_ARCHITECTURE: "MaskFormer"
   WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl" # 将weights转移到这里
