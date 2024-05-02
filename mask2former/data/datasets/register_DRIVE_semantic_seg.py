@@ -3,8 +3,8 @@ from detectron2.data.datasets import load_sem_seg
 import os
 
 # 'blood vessel' is the only category in DRIVE dataset
-KVASIR_SEG_CATEGORIES = [{"name": "other", "id": 0, "trainId": 0},
-                         {"name": "blood vessel", "id": 1, "trainId": 1}
+KVASIR_SEG_CATEGORIES = [{"name": "other", "id": 0, "trainId": 0,'color': [0, 0, 0],},
+                         {"name": "blood vessel", "id": 1, "trainId": 1,'color': [255, 255, 255],}
                         ] #
 
 def get_DRIVE_meta():
