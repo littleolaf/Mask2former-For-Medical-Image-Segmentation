@@ -84,7 +84,7 @@ def bridge(x:dict):
     y4 = x4.permute(0, 2, 3, 1).reshape(B, -1, C)
     total = torch.cat([y1,y2,y3,y4],-2)
 
-    out1 = LN(simple_atten(total) + total)
+    out1 = LN(simple_atten(total))
     # out1 = total + out1
 
     z1 = out1[:,:N1,:].reshape(B, H, W, C).permute(0, 3, 1, 2)
