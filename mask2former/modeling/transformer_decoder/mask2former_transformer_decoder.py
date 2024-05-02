@@ -22,18 +22,9 @@ class SelfAttentionLayer(nn.Module):
         self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
 
         #TODO:添加galerkin attention
-        from mask2former.modeling.backbone.galerkin_attention import SimpleAttention
-        self.simple_attn = SimpleAttention(n_head=nhead, # 注意力头数目
-                                    d_model=d_model, # 输入维度
-                                    attention_type="galerkin", # 注意力类型 
-                                    diagonal_weight=0.01, # 对角权重 0.01
-                                    xavier_init=0.01, # 是否使用Xavier初始化 0.01
-                                    symmetric_init=False, # 是否使用对称初始化 False
-                                    pos_dim=0, # 1
-                                    norm=True, # 是否使用层归一化 Ture
-                                    norm_type="layer", # 归一化类型 'layer'
-                                    eps=1e-05, # 归一化的epsilon值 1e-05
-                                    dropout=dropout) # dropout概率 0.0
+        # from mask2former.modeling.bridge.bridge import simple_attn
+        from mask2former.modeling.transformer_decoder.simple_attention import simple_attn
+        self.simple_attn = simple_attn(midc=d_model, heads=nhead)
 
         self.norm = nn.LayerNorm(d_model)
         self.dropout = nn.Dropout(dropout)
@@ -60,7 +51,8 @@ class SelfAttentionLayer(nn.Module):
         #                       key_padding_mask=tgt_key_padding_mask)[0]
         
         # TODO:添加新的attention
-        tgt2,_ = self.simple_attn(q,k,q,mask=tgt_mask)
+        # tgt2,_ = self.simple_attn(q,k,q,mask=tgt_mask)
+        tgt2 = self.simple_attn(q, tgt)
 
         tgt = tgt + self.dropout(tgt2)
         tgt = self.norm(tgt)
@@ -77,7 +69,8 @@ class SelfAttentionLayer(nn.Module):
         #                       key_padding_mask=tgt_key_padding_mask)[0]
         
         # TODO:添加新的attention
-        tgt2,_ = self.simple_attn(q,k,value=tgt2, mask=tgt_mask)
+        # tgt2,_ = self.simple_attn(q,k,value=tgt2, mask=tgt_mask)
+        tgt2 = self.simple_attn(q, tgt2)
 
         tgt = tgt + self.dropout(tgt2)
         
@@ -160,7 +153,7 @@ class CrossAttentionLayer(nn.Module):
 class FFNLayer(nn.Module):
 
     def __init__(self, d_model, dim_feedforward=2048, dropout=0.0,
-                 activation="relu", normalize_before=False):
+                 activation="gelu", normalize_before=False):
         super().__init__()
         # Implementation of Feedforward model
         self.linear1 = nn.Linear(d_model, dim_feedforward)
