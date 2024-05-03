@@ -34,7 +34,7 @@ class simple_attn(nn.Module):
         # self.act = nn.GELU()
 
     
-    def forward(self, x, name='0'):
+    def forward(self, x, *args):
         B, N, C = x.shape
         bias = x
 
