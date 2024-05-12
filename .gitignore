@@ -8,7 +8,7 @@ test_output/
 *.log
 z_compare*
 new*/
-test*
+test_bridge/
 
 # 忽略自带文件
 *ade*

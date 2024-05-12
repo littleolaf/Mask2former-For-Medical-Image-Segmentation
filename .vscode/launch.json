@@ -43,8 +43,8 @@
             "console": "integratedTerminal",
             "args": [
                 "--config-file",
-                // "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml", // resnet
-                "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+                "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml", // resnet
+                // "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
 
                 "--input", 
                 // "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/val/images/cju0qkwl35piu0993l0dewei2.jpg", // - val1
@@ -59,7 +59,7 @@
                 // "save_model/2w_b2_resnet/model_0019999.pth",  //resnet, 2w
                 // "save_model/2.5w_b3_resnet/model_0024999.pth",  //resnet, 2.5w
                 // "save_model/2w_b1_swin/model_0019999.pth",  //swin, 2w
-                "new_bridge/Swin2/model_0079999.pth",  //swin
+                "out_kvasir_newlabel/model_0004999.pth",  //swin
             ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",

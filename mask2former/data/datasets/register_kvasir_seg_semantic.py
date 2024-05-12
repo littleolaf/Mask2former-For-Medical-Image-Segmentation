@@ -3,8 +3,8 @@ from detectron2.data.datasets import load_sem_seg
 import os
 
 # 'polyp' is the only category in Kvasir SEG dataset
-KVASIR_SEG_CATEGORIES = [{"name": "other", "id": 0, "trainId": 0}, # ,'color': [0, 0, 0],
-                         {"name": "polyp", "id": 1, "trainId": 1} # ,'color': [255, 255, 255],
+KVASIR_SEG_CATEGORIES = [{"name": "other", "id": 1, "trainId": 1}, # ,'color': [0, 0, 0],
+                         {"name": "polyp", "id": 0, "trainId": 0} # ,'color': [255, 255, 255],
                         ] #
 
 def get_kvasir_seg_meta():

@@ -3,16 +3,16 @@ from detectron2.data.datasets import load_sem_seg
 import os
 
 # 'blood vessel' is the only category in DRIVE dataset
-KVASIR_SEG_CATEGORIES = [{"name": "other", "id": 0, "trainId": 0,'color': [0, 0, 0],},
+DRIVE_CATEGORIES = [{"name": "other", "id": 0, "trainId": 0,'color': [0, 0, 0],},
                          {"name": "blood vessel", "id": 1, "trainId": 1,'color': [255, 255, 255],}
                         ] #
 
 def get_DRIVE_meta():
-    stuff_ids = [k["id"] for k in KVASIR_SEG_CATEGORIES]
+    stuff_ids = [k["id"] for k in DRIVE_CATEGORIES]
     assert len(stuff_ids) == 2, len(stuff_ids)
 
     stuff_dataset_id_to_contiguous_id = {k: i for i, k in enumerate(stuff_ids)}
-    stuff_classes = [k["name"] for k in KVASIR_SEG_CATEGORIES]
+    stuff_classes = [k["name"] for k in DRIVE_CATEGORIES]
 
     ret = {
         "stuff_dataset_id_to_contiguous_id": stuff_dataset_id_to_contiguous_id,
