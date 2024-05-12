@@ -47,11 +47,11 @@
                 "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
 
                 "--input", 
-                "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/val/images/cju0qkwl35piu0993l0dewei2.jpg", // - val1
-                // "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/val/images/cju2s16zp317h0799gr67jqc2.jpg",  // - val2
+                // "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/val/images/cju0qkwl35piu0993l0dewei2.jpg", // - val1
+                "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/val/images/cju2s16zp317h0799gr67jqc2.jpg",  // - val2
                 // "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/train/images/cju0qoxqj9q6s0835b43399p4.jpg", //- train1
                 "--output", 
-                "./test_output/val1.png", 
+                "./test_output/val2.png", 
                 // "./test_output/val2.png", 
                 // "./test_output/train1.png",
                 "--opts", "MODEL.WEIGHTS", 
@@ -119,23 +119,43 @@
             "console": "integratedTerminal",
             "args": [
                 "--config-file",
-                // "configs/DRIVE/MaskFormer2_R50_bs16_160k.yaml", // resnet
-                "configs/DRIVE/MaskFormer2_R50_galerkin.yaml",  //galerkin
+                "configs/DRIVE/MaskFormer2_R50_bs16_160k.yaml", // resnet
+                // "configs/DRIVE/MaskFormer2_R50_galerkin.yaml",  //galerkin
                 // "configs/DRIVE/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
 
                 "--input", 
-                "/home/tangwuyang/Dataset/DRIVE/test/images/01_test.tif", // - val1
+                // "/home/tangwuyang/Dataset/DRIVE/test/images/01_test.tif", // - val1
+                "/home/tangwuyang/Dataset/DRIVE/training/images/21_training.tif",  // - val2
                 "--output", 
-                "./test_output/val1.png", 
+                "./test_output/val2.png", 
                 // "./test_output/val2.png", 
                 // "./test_output/train1.png",
                 "--opts", "MODEL.WEIGHTS", 
-                "output_DRIVE/model_0004999.pth",
+                "output_DRIVE_swin/model_0004999.pth",
             ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
             },
             "cwd": "${workspaceFolder}",
-        }
+        },
+        {
+            "name": "DRIVE_evaluation",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/tangwuyang/MINImask2former/train_net.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--config-file",
+                // "configs/DRIVE/MaskFormer2_R50_bs16_160k.yaml", // resnet
+                // "configs/DRIVE/MaskFormer2_R50_galerkin.yaml",  //galerkin
+                "configs/DRIVE/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+                "--eval-only", "MODEL.WEIGHTS", 
+                "output_DRIVE_swin/model_0004999.pth",
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
+            },
+            "cwd": "${workspaceFolder}",
+        },
     ]
 }

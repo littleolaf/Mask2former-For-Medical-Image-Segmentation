@@ -22,8 +22,8 @@ class SelfAttentionLayer(nn.Module):
         self.self_attn = nn.MultiheadAttention(d_model, nhead, dropout=dropout)
 
         #TODO:添加galerkin attention
-        # from mask2former.modeling.bridge.bridge import simple_attn
-        from mask2former.modeling.transformer_decoder.simple_attention import simple_attn
+        from mask2former.modeling.bridge.bridge import simple_attn
+        # from mask2former.modeling.transformer_decoder.simple_attention import simple_attn
         self.simple_attn = simple_attn(midc=d_model, heads=nhead)
 
         self.norm = nn.LayerNorm(d_model)
