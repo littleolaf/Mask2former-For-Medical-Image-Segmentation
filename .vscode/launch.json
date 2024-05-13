@@ -195,5 +195,30 @@
             },
             "cwd": "${workspaceFolder}",
         },
+        {
+            "name": "Synapse_test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/tangwuyang/MINImask2former/demo/demo.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--config-file",
+                // "configs/Synapse/MaskFormer2_R50_bs16_160k.yaml", // resnet
+                "configs/Synapse/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+
+                "--input", 
+                "/home/tangwuyang/Dataset/Synapse/test/images/case0005_slice070.npz",
+                "--output", 
+                "./test_output/val0.png", 
+                // "./test_output/val2.png", 
+                // "./test_output/train1.png",
+                "--opts", "MODEL.WEIGHTS", 
+                "out_Synapse_swin/model_0004999.pth",  //swin
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
+            },
+            "cwd": "${workspaceFolder}",
+        },
     ]
 }
