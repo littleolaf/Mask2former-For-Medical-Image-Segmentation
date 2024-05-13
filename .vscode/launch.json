@@ -157,5 +157,43 @@
             },
             "cwd": "${workspaceFolder}",
         },
+        {
+            "name": "Synapse",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/tangwuyang/MINImask2former/train_net.py",
+            "console": "integratedTerminal",
+            "args": ["--config-file",
+            "configs/Synapse/MaskFormer2_R50_bs16_160k.yaml",  //resnet
+            // "configs/kvasir_seg/MaskFormer2_R50_galerkin.yaml",  //galerkin
+            // "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+            "--num-gpus",
+            "1",
+            "--num-machines",
+            "1",
+            "SOLVER.IMS_PER_BATCH",
+            "1",
+            "SOLVER.BASE_LR",
+            "0.0001"]
+        },
+        {
+            "name": "Synapse_evaluation",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/tangwuyang/MINImask2former/train_net.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--config-file",
+                "configs/Synapse/MaskFormer2_R50_bs16_160k.yaml", // resnet
+                // "configs/DRIVE/MaskFormer2_R50_galerkin.yaml",  //galerkin
+                // "configs/Synapse/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+                "--eval-only", "MODEL.WEIGHTS", 
+                "out_synpase_resnet/model_0004999.pth",
+            ],
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
+            },
+            "cwd": "${workspaceFolder}",
+        },
     ]
 }
