@@ -7,7 +7,9 @@ from . import (
     register_coco_panoptic_annos_semseg,
     register_ade20k_instance,
     register_mapillary_vistas_panoptic,
+
     register_kvasir_seg_semantic,
-    
     register_DRIVE_semantic_seg,
+    register_Synapse_train_semantic_seg,
+    register_Synapse_test_semantic_seg,
 )
