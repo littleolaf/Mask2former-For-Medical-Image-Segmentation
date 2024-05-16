@@ -62,7 +62,7 @@ def register_Synapse(name, root):
         image_root=image_dir,
         sem_seg_root=gt_dir,
         evaluator_type="sem_seg",
-        ignore_label=0,
+        ignore_label=100,
         **get_Synapse_meta(),
     )
 
