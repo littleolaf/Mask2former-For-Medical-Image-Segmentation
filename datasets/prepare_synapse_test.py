@@ -11,7 +11,7 @@ output_dir_labels = os.path.join(_root, "Synapse/val/labels")
 slice_images = os.path.join(_root, "Synapse/test/images")
 slice_labels = os.path.join(_root, "Synapse/test/labels")
 
-# 创建输出文件夹（如果不存在）
+# 创建输出文件夹
 os.makedirs(output_dir_images, exist_ok=True)
 os.makedirs(output_dir_labels, exist_ok=True)
 

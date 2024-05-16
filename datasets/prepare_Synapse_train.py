@@ -17,7 +17,7 @@ def read_and_convert_npz(source_dir, target_dir):
         if file_name.endswith('.npz'):
             file_path = os.path.join(source_dir, file_name)
             with np.load(file_path) as data:
-                # 假设数据包含 'image' 和 'label' 两个键
+                # 数据包含 'image' 和 'label' 两个键
                 image = data['image']
                 label = data['label']
 
@@ -30,7 +30,7 @@ def read_and_convert_npz(source_dir, target_dir):
                 label_path = os.path.join(target_dir + "/labels/", file_name)
                 np.savez(label_path, label)
 
-# 使用示例
+
 source_directory = '/home/tangwuyang/Dataset/Synapse/train_npz'
 target_directory = '/home/tangwuyang/Dataset/Synapse/train'
 read_and_convert_npz(source_directory, target_directory)
