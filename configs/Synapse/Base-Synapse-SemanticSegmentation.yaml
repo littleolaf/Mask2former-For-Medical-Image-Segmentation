@@ -50,7 +50,7 @@ INPUT:
   # IMAGE_SIZE: 512 # 1024
   # MIN_SCALE: 0.1
   # MAX_SCALE: 2.0
-  FORMAT: "L"
+  FORMAT: "RGB"
   DATASET_MAPPER_NAME: "mask_former_semantic"
 TEST:
   EVAL_PERIOD: 5000 # 5000在训练多少次后开始evaluate
