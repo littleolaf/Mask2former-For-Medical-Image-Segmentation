@@ -1,13 +1,14 @@
-## Introduction of kvasir-SEG dataset
-[Kvasir-SEG Website](https://datasets.simula.no/kvasir-seg/)  
-It is an open-access dataset of gastrointestinal polyp images and corresponding segmentation masks, manually annotated and verified by an experienced gastroenterologist.
-## Register the dataset in Detectron2
-Please refer to Detectron2 's official documentation: [Register a Dataset](https://detectron2.readthedocs.io/tutorials/datasets.html#register-a-dataset)  
+# Prepare datasets for MeGaFormer 
+In MeGaFormer, we use the Detectron2 library to load datasets. The data of the datasets can be obtained by using 'DatasetCatalog', or its metadata can be obtained by accessing 'MetadataCatalog'. This document describes how to correctly set the dataset's format so that the above API can use them.
 
+## Expected datasets format:
+Please refer to Detectron2's official documentation: [Register a Dataset](https://detectron2.readthedocs.io/tutorials/datasets.html#register-a-dataset)  
+
+### [Kvasir-SEG dataset](https://datasets.simula.no/kvasir-seg/)  
+It is an open-access dataset of gastrointestinal polyp images and corresponding segmentation masks, manually annotated and verified by an experienced gastroenterologist.  
 The specific configuration information can be found in the following location:
-`mask2former/data/datasets/register_kvasir_seg_semantic.py`  
-
-Expected dataset structure for kvasir-SEG: 
+`mask2former/data/datasets/register_kvasir_seg_semantic.py`    
+Expected dataset structure for kvasir-SEG:  
 ```shell
 $DETECTRON2_DATASETS/
   kvasir-SEG/
@@ -17,5 +18,31 @@ $DETECTRON2_DATASETS/
     val/
       images/
       masks/
-```
-`$DETECTRON2_DATASETS` is the environment variable specify the location of the datasets.
+```  
+`$DETECTRON2_DATASETS` is the environment variable specify the location of the datasets.  
+### DRIVE dataset 
+The specific configuration information can be found at the following location: `mask2former/data/datasets/register_drive_semantic_seg.py`  
+Expected dataset structure for DRIVE:  
+```shell
+$DETECTRON2_DATASETS/
+  DRIVE/
+    training/
+      images/
+      1st_manual/
+    test/
+      images/
+      1st_manual/
+```  
+### Synapse dataset 
+The specific configuration information can be found at the following location: `mask2former/data/datasets/register_Synapse_*_semantic_seg.py`  
+Expected dataset structure for Synapse:  
+```shell
+$DETECTRON2_DATASETS/
+  Synapse/
+    train/
+      images/
+      masks/
+    test/
+      images/
+      masks/
+```  
