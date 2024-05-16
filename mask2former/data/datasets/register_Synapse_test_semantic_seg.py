@@ -3,15 +3,25 @@ from detectron2.data.datasets import load_sem_seg
 import os
 
 # 'blood vessel' is the only category in DRIVE dataset
-SYNAPSE_TEST_CATEGORIES = [{"name": "other", "id": 0, "trainId": 0,}, # 'color': [0, 0, 0],
-                         {"name": "spleen脾", "id": 1, "trainId": 1,},
-                         {"name": "right kidney右肾脏", "id": 2, "trainId": 2,},
-                         {"name": "left kidney左肾脏", "id": 3, "trainId": 3,},
-                         {"name": "gallbladder胆囊", "id": 4, "trainId": 4,},
-                         {"name": "liver肝", "id": 6, "trainId": 6,},
-                         {"name": "stomach胃", "id": 7, "trainId": 7,},
-                         {"name": "aorta主动脉", "id": 8, "trainId": 8,},
-                         {"name": "pancreas胰腺", "id": 11, "trainId": 11,},
+SYNAPSE_TEST_CATEGORIES = [
+                        # {"name": "other", "id": 0, "trainId": 0,}, # 'color': [0, 0, 0],
+                        #  {"name": "aorta主动脉", "id": 1, "trainId": 1,}, # 对
+                        #  {"name": "gallbladder胆囊", "id": 2, "trainId": 2,}, # 对
+                        #  {"name": "left kidney左肾脏", "id": 3, "trainId": 3,},
+                        #  {"name": "right kidney右肾脏", "id": 4, "trainId": 4,},
+                        #  {"name": "liver肝", "id": 6, "trainId": 6,}, # 对
+                        #  {"name": "pancreas胰腺", "id": 7, "trainId": 7,},
+                        #  {"name": "spleen脾", "id": 8, "trainId": 8,}, # 对
+                        #  {"name": "stomach胃", "id": 11, "trainId": 11,}, #对
+                         {"name": "", "id": 0, "trainId": 0,}, # 'color': [0, 0, 0],
+                         {"name": "", "id": 1, "trainId": 1,}, # 对
+                         {"name": "", "id": 2, "trainId": 2,}, # 对
+                         {"name": "", "id": 3, "trainId": 3,},
+                         {"name": "", "id": 4, "trainId": 4,},
+                         {"name": "", "id": 6, "trainId": 6,}, # 对
+                         {"name": "", "id": 7, "trainId": 7,},
+                         {"name": "", "id": 8, "trainId": 8,}, # 对
+                         {"name": "", "id": 11, "trainId": 11,}, #对
                         ] #
 
 def get_Synapse_meta():

@@ -3,20 +3,35 @@ from detectron2.data.datasets import load_sem_seg
 import os
 
 # 'blood vessel' is the only category in DRIVE dataset
-SYNAPSE_TRAIN_CATEGORIES = [{"name": "other", "id": 0, "trainId": 0,}, # 'color': [0, 0, 0],
-                         {"name": "spleen脾", "id": 1, "trainId": 1,},
-                         {"name": "right kidney右肾脏", "id": 2, "trainId": 2,},
-                         {"name": "left kidney左肾脏", "id": 3, "trainId": 3,},
-                         {"name": "gallbladder胆囊", "id": 4, "trainId": 4,},
-                         {"name": "esophagus食管", "id": 5, "trainId": 5,}, # not in test
-                         {"name": "liver肝", "id": 6, "trainId": 6,},
-                         {"name": "stomach胃", "id": 7, "trainId": 7,},
-                         {"name": "aorta主动脉", "id": 8, "trainId": 8,},
-                         {"name": "inferior vena cava下腹静脉", "id": 9, "trainId": 9,}, # not in test
-                         {"name": "portal & splenic vein门/脾 静脉", "id": 10, "trainId": 10,}, # not in test
-                         {"name": "pancreas胰腺", "id": 11, "trainId": 11,},
-                         {"name": "right adrenal gland右肾上腺", "id": 12, "trainId": 12,}, # not in test
-                         {"name": "left adrenal gland左肾上腺", "id": 13, "trainId": 13,}, # not in test
+SYNAPSE_TRAIN_CATEGORIES = [
+                        #  {"name": "other", "id": 0, "trainId": 0,}, # 'color': [0, 0, 0],                         
+                        #  {"name": "aorta主动脉", "id": 1, "trainId": 1,}, # 对
+                        #  {"name": "gallbladder胆囊", "id": 2, "trainId": 2,}, # 对
+                        #  {"name": "left kidney左肾脏", "id": 3, "trainId": 3,}, # 对
+                        #  {"name": "right kidney右肾脏", "id": 4, "trainId": 4,}, # 对
+                        #  {"name": "esophagus食管", "id": 5, "trainId": 5,}, # not in test
+                        #  {"name": "liver肝", "id": 6, "trainId": 6,}, # 对
+                        #  {"name": "pancreas胰腺", "id": 7, "trainId": 7,},
+                        #  {"name": "spleen脾", "id": 8, "trainId": 8,},# 对
+                        #  {"name": "inferior vena cava下腹静脉", "id": 9, "trainId": 9,}, # not in test
+                        #  {"name": "portal & splenic vein门/脾 静脉", "id": 10, "trainId": 10,}, # not in test
+                        #  {"name": "stomach胃", "id": 11, "trainId": 11,}, # 对
+                        #  {"name": "right adrenal gland右肾上腺", "id": 12, "trainId": 12,}, # not in test
+                        #  {"name": "left adrenal gland左肾上腺", "id": 13, "trainId": 13,}, # not in test
+                         {"name": "", "id": 0, "trainId": 0,}, # 'color': [0, 0, 0],                         
+                         {"name": "", "id": 1, "trainId": 1,}, # 对
+                         {"name": "", "id": 2, "trainId": 2,}, # 对
+                         {"name": "", "id": 3, "trainId": 3,}, # 对
+                         {"name": "", "id": 4, "trainId": 4,}, # 对
+                         {"name": "", "id": 5, "trainId": 5,}, # not in test
+                         {"name": "", "id": 6, "trainId": 6,}, # 对
+                         {"name": "", "id": 7, "trainId": 7,},
+                         {"name": "", "id": 8, "trainId": 8,},# 对
+                         {"name": "", "id": 9, "trainId": 9,}, # not in test
+                         {"name": "", "id": 10, "trainId": 10,}, # not in test
+                         {"name": "", "id": 11, "trainId": 11,}, # 对
+                         {"name": "", "id": 12, "trainId": 12,}, # not in test
+                         {"name": "", "id": 13, "trainId": 13,}, # not in test
                         ] #
 
 def get_Synapse_meta():
