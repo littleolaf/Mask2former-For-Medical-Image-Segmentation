@@ -7,7 +7,7 @@ MODEL:
   WEIGHTS: "detectron2://ImageNetPretrained/torchvision/R-50.pkl" # 将weights转移到这里
   SEM_SEG_HEAD:
     NAME: "MaskFormerHead"
-    IGNORE_VALUE: 10 #
+    IGNORE_VALUE: 0 #
     NUM_CLASSES: 2  # Only 'blood vessel' class
     LOSS_WEIGHT: 1.0
     CONVS_DIM: 256
