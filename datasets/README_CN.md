@@ -32,10 +32,16 @@ $DETECTRON2_DATASETS/
       1st_manual/
 ```  
 ### Synapse数据集
-具体配置信息可在如下位置找到： `mask2former/data/datasets/register_drive_semantic.py`  
+具体配置信息可在如下位置找到： `mask2former/data/datasets/register_Synapse_*_semantic_seg.py`  
+使用位于`datasets`目录下的`prepare_Synapse_*.py`脚本来生成预期格式的Synapse数据集。  
 预期数据集结构如下所示：  
 ```bash
 $DETECTRON2_DATASETS/
   Synapse/
-    
+    train/
+      images/
+      masks/
+    test/
+      images/
+      masks/
 ```  
