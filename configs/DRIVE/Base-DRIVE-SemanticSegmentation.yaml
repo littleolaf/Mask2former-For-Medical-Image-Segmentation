@@ -34,7 +34,7 @@ SOLVER:
   AMP:
     ENABLED: True
 INPUT:
-  MIN_SIZE_TRAIN: !!python/object/apply:eval ["[int(x * 0.1 * 512) for x in range(5, 21)]"]
+  MIN_SIZE_TRAIN: !!python/object/apply:eval ["[int(x * 0.1 * 512) for x in range(8, 21)]"]
   MIN_SIZE_TRAIN_SAMPLING: "choice"
   MIN_SIZE_TEST: 512
   MAX_SIZE_TRAIN: 1333
@@ -53,7 +53,7 @@ INPUT:
   FORMAT: "RGB"
   DATASET_MAPPER_NAME: "mask_former_semantic"
 TEST:
-  EVAL_PERIOD: 2000 # 5000在训练多少次后开始evaluate
+  EVAL_PERIOD: 5000 # 5000在训练多少次后开始evaluate
   # AUG:
   #   ENABLED: True
   #   MIN_SIZES: [256, 384, 512, 640, 768, 896]

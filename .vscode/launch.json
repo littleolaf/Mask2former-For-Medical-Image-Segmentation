@@ -98,8 +98,8 @@
             "program": "/home/tangwuyang/MINImask2former/train_net.py",
             "console": "integratedTerminal",
             "args": ["--config-file",
-            // "configs/DRIVE/MaskFormer2_R50_bs16_160k.yaml",  //resnet
-            "configs/DRIVE/MaskFormer2_R50_galerkin.yaml",  //galerkin
+            "configs/DRIVE/MaskFormer2_R50_bs16_160k.yaml",  //resnet
+            // "configs/DRIVE/MaskFormer2_R50_galerkin.yaml",  //galerkin
             // "configs/DRIVE/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
             "--num-gpus",
             "1",
