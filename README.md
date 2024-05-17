@@ -6,6 +6,3 @@
 
 ## 感谢各位的关注，期待数月之后再见！
 curl 'http://10.3.8.211/login' --data "user=&pass=" # user=后面填自己的校园网账号，pass填自己校园网账号密码  
-<div id="header" align="center">
-  <img src="https://komarev.com/ghpvc/?username=littleolaf/Mask2former-For-Medical-Image-Segmentation&style=for-the-badge&color=orange" alt=""/>
-</div>
