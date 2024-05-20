@@ -108,6 +108,7 @@ class MaskFormerSemanticDatasetMapper:
         assert self.is_train, "MaskFormerSemanticDatasetMapper should only be used for training!"
 
         dataset_dict = copy.deepcopy(dataset_dict)  # it will be modified by code below
+
         image = utils.read_image(dataset_dict["file_name"], format=self.img_format)
         utils.check_image_size(dataset_dict, image)
 
@@ -116,11 +117,15 @@ class MaskFormerSemanticDatasetMapper:
             """修改读取mask文件方式转为灰度图读取"""
             # sem_seg_gt = utils.read_image(dataset_dict.pop("sem_seg_file_name")).astype("double") #这个读出来是个二维数组
 
-
-            # 以下是为了kvasir进行修改读取mask文件方式转为灰度图读取的部分   
-            gt_image = Image.open(dataset_dict.pop("sem_seg_file_name")).convert('L')
-            gt_binary_array = np.asarray(gt_image)
-            sem_seg_gt = np.where(gt_binary_array > 0, 1, 0).astype("double")  # .astype(np.uint8)
+            ground_truth = dataset_dict.pop("sem_seg_file_name")
+            if ground_truth.endswith('.npz'):
+                gt_binary_array = np.load(ground_truth)["arr_0"]
+                sem_seg_gt = gt_binary_array.astype(np.uint8)  # .astype(np.uint8)
+            else:
+                # 以下是为了kvasir进行修改读取mask文件方式转为灰度图读取的部分   
+                gt_image = Image.open(ground_truth).convert('L')
+                gt_binary_array = np.asarray(gt_image)
+                sem_seg_gt = np.where(gt_binary_array > 0, 1, 0).astype("double")  #kvasir和DRIVE的二值图
 
 
             
