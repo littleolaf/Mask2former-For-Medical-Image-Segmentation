@@ -1,5 +1,5 @@
 _BASE_: ../MaskFormer2_R50_bs16_160k.yaml
-OUTPUT_DIR: "out_Synapse_galerkin/" # 指定输出路径
+OUTPUT_DIR: "out_DRIVE_galerkin_trans/" # 指定输出路径
 MODEL:
   BACKBONE:
     NAME: "D2GalerkinTransformer"
