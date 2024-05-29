@@ -20,7 +20,7 @@
             "name": "kvasir",
             "type": "debugpy",
             "request": "launch",
-            "program": "/home/tangwuyang/MINImask2former/train_net.py",
+            "program": "/home/tangwuyang/MINIMask2former/train_net.py",
             "console": "integratedTerminal",
             "args": ["--config-file",
             "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml",  //resnet
@@ -39,12 +39,13 @@
             "name": "kvasir_test",
             "type": "debugpy",
             "request": "launch",
-            "program": "/home/tangwuyang/MINImask2former/demo/demo.py",
+            "program": "/home/tangwuyang/MINIMask2former/demo/demo.py",
             "console": "integratedTerminal",
             "args": [
                 "--config-file",
                 // "configs/kvasir_seg/MaskFormer2_R50_bs16_160k.yaml", // resnet
-                "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+                // "configs/kvasir_seg/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+                "configs/kvasir_seg/galerkin_trans/galerkin_transformer_base_model.yaml",  //big size
 
                 "--input", 
                 // "/home/tangwuyang/Dataset/kvasir/Kvasir-SEG/val/images/cju0qkwl35piu0993l0dewei2.jpg", // - val1
@@ -59,7 +60,8 @@
                 // "save_model/2w_b2_resnet/model_0019999.pth",  //resnet, 2w
                 // "save_model/2.5w_b3_resnet/model_0024999.pth",  //resnet, 2.5w
                 // "save_model/2w_b1_swin/model_0019999.pth",  //swin, 2w
-                "new_bridge/Swin2/model_0079999.pth",  //swin
+                // "new_bridge/Swin2/model_0079999.pth",  //swin
+                "out_kvasir_swin_big_base/model_0009999.pth",
             ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
@@ -70,7 +72,7 @@
             "name": "kvasir_evaluation",
             "type": "debugpy",
             "request": "launch",
-            "program": "/home/tangwuyang/MINImask2former/train_net.py",
+            "program": "/home/tangwuyang/MINIMask2former/train_net.py",
             "console": "integratedTerminal",
             "args": [
                 "--config-file",
@@ -95,18 +97,18 @@
             "name": "DRIVE",
             "type": "debugpy",
             "request": "launch",
-            "program": "/home/tangwuyang/MINImask2former/train_net.py",
+            "program": "/home/tangwuyang/MINIMask2former/train_net.py",
             "console": "integratedTerminal",
             "args": ["--config-file",
-            "configs/DRIVE/MaskFormer2_R50_bs16_160k.yaml",  //resnet
-            // "configs/DRIVE/MaskFormer2_R50_galerkin.yaml",  //galerkin
+            // "configs/DRIVE/MaskFormer2_R50_bs16_160k.yaml",  //resnet
+            "configs/DRIVE/galerkin_trans/galerkin_transformer.yaml",  //galerkin
             // "configs/DRIVE/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
             "--num-gpus",
             "1",
             "--num-machines",
             "1",
             "SOLVER.IMS_PER_BATCH",
-            "2",
+            "1",
             "SOLVER.BASE_LR",
             "0.0001"]
         },
@@ -115,7 +117,7 @@
             "name": "DRIVE_test",
             "type": "debugpy",
             "request": "launch",
-            "program": "/home/tangwuyang/MINImask2former/demo/demo.py",
+            "program": "/home/tangwuyang/MINIMask2former/demo/demo.py",
             "console": "integratedTerminal",
             "args": [
                 "--config-file",
@@ -142,7 +144,7 @@
             "name": "DRIVE_evaluation",
             "type": "debugpy",
             "request": "launch",
-            "program": "/home/tangwuyang/MINImask2former/train_net.py",
+            "program": "/home/tangwuyang/MINIMask2former/train_net.py",
             "console": "integratedTerminal",
             "args": [
                 "--config-file",
@@ -161,13 +163,13 @@
             "name": "Synapse",
             "type": "debugpy",
             "request": "launch",
-            "program": "/home/tangwuyang/MINImask2former/train_net.py",
+            "program": "/home/tangwuyang/MeGaFormer/train_net.py",
             "console": "integratedTerminal",
             "args": ["--config-file",
             // "configs/Synapse/MaskFormer2_R50_bs16_160k.yaml",  //resnet
             // "configs/kvasir_seg/MaskFormer2_R50_galerkin.yaml",  //galerkin
-            // "configs/Synapse/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
-            "configs/Synapse/galerkin_trans/galerkin_transformer.yaml",  //galerkin_trans
+            "configs/Synapse/swin/swin_transformer_base_model.yaml",  //swin
+            // "configs/Synapse/galerkin_trans/galerkin_transformer_base_model.yaml",  //galerkin_trans
             "--num-gpus",
             "1",
             "--num-machines",
@@ -181,7 +183,7 @@
             "name": "Synapse_evaluation",
             "type": "debugpy",
             "request": "launch",
-            "program": "/home/tangwuyang/MINImask2former/train_net.py",
+            "program": "/home/tangwuyang/MeGaFormer/train_net.py",
             "console": "integratedTerminal",
             "args": [
                 "--config-file",
@@ -200,12 +202,13 @@
             "name": "Synapse_test",
             "type": "debugpy",
             "request": "launch",
-            "program": "/home/tangwuyang/MINImask2former/demo/demo.py",
+            "program": "/home/tangwuyang/MeGaFormer/demo/demo.py",
             "console": "integratedTerminal",
             "args": [
                 "--config-file",
                 // "configs/Synapse/MaskFormer2_R50_bs16_160k.yaml", // resnet
                 "configs/Synapse/swin/maskformer2_swin_large_IN21k_384_bs16_160k.yaml",  //swin
+                // "configs/Synapse/galerkin_trans/galerkin_transformer_base_model.yaml",
 
                 "--input", 
                 // "/home/tangwuyang/Dataset/Synapse/test/images/case0001_slice095.npz",
@@ -216,6 +219,7 @@
                 // "./test_output/train1.png",
                 "--opts", "MODEL.WEIGHTS", 
                 "out_Synapse_swin/model_0079999.pth",  //swin
+                // "out_Synapse_galerkin_base/model_0004999.pth"
             ],
             "env": {
                 "PYTHONPATH": "${workspaceFolder}${pathSeparator}${env:PYTHONPATH}",
