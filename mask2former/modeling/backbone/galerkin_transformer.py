@@ -487,7 +487,7 @@ class SwinTransformer(nn.Module):
                 attn_drop=attn_drop_rate,
                 drop_path=dpr[sum(depths[:i_layer]) : sum(depths[: i_layer + 1])],
                 norm_layer=norm_layer,
-                downsample=PatchMerging if (i_layer < self.num_layers - 1) else None,
+                downsample=PatchMerging if (i_layer < self.num_layers - 1) else None, # TODO 此处可以去掉一个PatchMerging
                 use_checkpoint=use_checkpoint,
             )
             self.layers.append(layer)
@@ -615,6 +615,12 @@ class D2GalerkinTransformer(SwinTransformer, Backbone):
 
         self._out_features = cfg.MODEL.SWIN.OUT_FEATURES
 
+        # self._out_feature_strides = {
+        #     "res2": 2,
+        #     "res3": 4,
+        #     "res4": 8,
+        #     "res5": 16,
+        # }
         self._out_feature_strides = {
             "res2": 4,
             "res3": 8,
