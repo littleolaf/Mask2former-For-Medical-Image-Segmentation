@@ -1,0 +1,13 @@
+spleen脾
+right kidney右肾脏
+left kidney左肾脏
+gallbladder胆囊
+esophagus食管
+liver肝
+stomach胃
+aorta主动脉
+inferior vena cava下腹静脉
+portal & splenic vein门/脾 静脉
+pancreas胰腺
+right adrenal gland右肾上腺
+left adrenal gland左肾上腺
