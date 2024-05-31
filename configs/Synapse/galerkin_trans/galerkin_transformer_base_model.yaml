@@ -1,18 +1,18 @@
 _BASE_: ../MaskFormer2_R50_bs16_160k.yaml
-OUTPUT_DIR: "out_kvasir_galerkin/" # 指定输出路径
+OUTPUT_DIR: "out_Synapse_galerkin_base/" # 指定输出路径
 MODEL:
   BACKBONE:
     NAME: "D2GalerkinTransformer"
   SWIN:
-    EMBED_DIM: 192
-    DEPTHS: [2, 2, 18, 2]
+    EMBED_DIM: 128
+    DEPTHS: [2, 2, 18, 2] # [2, 2, 18, 2]
     NUM_HEADS: [64, 64, 128, 128] # [6, 12, 24, 48]
     WINDOW_SIZE: 12
     APE: False
     DROP_PATH_RATE: 0.3
     PATCH_NORM: True
     PRETRAIN_IMG_SIZE: 384
-    PATCH_SIZE: 4
-  WEIGHTS: "save_model/swin_model/swin_large_patch4_window12_384_22k.pkl"
+    PATCH_SIZE: 2
+  WEIGHTS: "save_model/swin_base/swin_base_patch4_window12_384_22k.pkl"
   PIXEL_MEAN: [123.675, 116.280, 103.530]
   PIXEL_STD: [58.395, 57.120, 57.375]
